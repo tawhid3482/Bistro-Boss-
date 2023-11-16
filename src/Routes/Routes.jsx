@@ -8,6 +8,7 @@ import Registration from "../Pages/Registration/Registration";
 import PrivateRoute from "./PrivateRoute";
 import Dashbord from "../LayOut/Dashbord";
 import Cart from "../Pages/Dashboard/Cart/Cart";
+import AllUsers from "../Pages/Dashboard/AllUsers/AllUsers";
 
 const Routes = createBrowserRouter([
   {
@@ -47,6 +48,11 @@ const Routes = createBrowserRouter([
       {
         path: "cart",
         element: <Cart></Cart>,
+      },
+      // admin lavel
+      {
+        path: "users",
+        element: <AllUsers></AllUsers>,
       },
     ],
   },

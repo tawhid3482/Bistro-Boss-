@@ -5,15 +5,16 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
-  
   updateProfile,
 } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
 import auth from "../Firebase/Firebase.config";
+import UserAxiosPublic from "../Hooks/UserAxiosPublic";
 
 export const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
-  const GoogleProvider = new GoogleAuthProvider()
+  const GoogleProvider = new GoogleAuthProvider();
+  const axiosPublic = UserAxiosPublic();
   const [user, setUser] = useState(null);
 
   const [loading, setLoading] = useState(true);
@@ -28,28 +29,42 @@ const AuthProvider = ({ children }) => {
   };
   const loginbyGoogle = () => {
     setLoading(true);
-    return signInWithPopup(auth,GoogleProvider);
+    return signInWithPopup(auth, GoogleProvider);
   };
-const updateProfileUser = (name,photo)=>{
-  return updateProfile(auth.currentUser,{
-    displayName:name, photoURL:photo
-  })
-}
+  const updateProfileUser = (name, photo) => {
+    return updateProfile(auth.currentUser, {
+      displayName: name,
+      photoURL: photo,
+    });
+  };
 
   useEffect(() => {
     const observe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      console.log(currentUser);
+      if (currentUser) {
+        const userInfo = { email: currentUser.email };
+
+        axiosPublic.post("/jwt", userInfo)
+        .then((res) => {
+          if (res.data.token) {
+            localStorage.setItem("access-token", res.data.token);
+          }
+        });
+      }
+       else{
+        localStorage.removeItem("access-token")
+      }
+      
       setLoading(false);
     });
     return () => {
       return observe();
     };
-  }, []);
-  const logout = ()=>{
-    setLoading(true)
-    return signOut(auth)
-  }
+  }, [axiosPublic]);
+  const logout = () => {
+    setLoading(true);
+    return signOut(auth);
+  };
 
   const authInfo = {
     user,
@@ -58,7 +73,7 @@ const updateProfileUser = (name,photo)=>{
     CreateUser,
     loginbyGoogle,
     logout,
-    updateProfileUser
+    updateProfileUser,
   };
   return (
     <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>

@@ -4,6 +4,7 @@ import { Helmet } from "react-helmet-async";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import UserAxiosPublic from "../../Hooks/UserAxiosPublic";
+import SocialLogin from "../../Components/SocialLogin/SocialLogin";
 
 const Registration = () => {
   const axiosPublic = UserAxiosPublic();
@@ -25,6 +26,7 @@ const Registration = () => {
         .then(() => {
           const userInfo = {
             name: data.name,
+            email:data.email
           };
           axiosPublic.post("/users", userInfo).then((res) => {
             if (res.data.insertedId) {
@@ -164,6 +166,9 @@ const Registration = () => {
                 </span>
               </p>
             </div>
+            <div className="text-center p-4">
+            <SocialLogin></SocialLogin>
+          </div>
           </div>
         </div>
       </div>
