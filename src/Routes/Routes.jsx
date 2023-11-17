@@ -9,6 +9,10 @@ import PrivateRoute from "./PrivateRoute";
 import Dashbord from "../LayOut/Dashbord";
 import Cart from "../Pages/Dashboard/Cart/Cart";
 import AllUsers from "../Pages/Dashboard/AllUsers/AllUsers";
+import AddItems from "../Pages/Dashboard/AddItems/AddItems";
+import AdminRoute from "./AdminRoute";
+import MangeItems from "../Pages/Dashboard/ManageItems/MangeItems";
+import UpdateItem from "../Pages/Dashboard/UpdateItem/UpdateItem";
 
 const Routes = createBrowserRouter([
   {
@@ -51,8 +55,43 @@ const Routes = createBrowserRouter([
       },
       // admin lavel
       {
+        path: "manageItems",
+        element: (
+          <AdminRoute>
+            <MangeItems></MangeItems>
+          </AdminRoute>
+        ),
+      },
+
+      {
+        path: "updateItem/:id",
+        element: (
+          <AdminRoute>
+            <UpdateItem></UpdateItem>
+          </AdminRoute>
+        ),
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/menu/${params.id}`),
+      },
+
+      
+      {
+        path: "addItems",
+        element: (
+          <AdminRoute>
+            {" "}
+            <AddItems></AddItems>
+          </AdminRoute>
+        ),
+      },
+      {
         path: "users",
-        element: <AllUsers></AllUsers>,
+        element: (
+          <AdminRoute>
+            {" "}
+            <AllUsers></AllUsers>
+          </AdminRoute>
+        ),
       },
     ],
   },
