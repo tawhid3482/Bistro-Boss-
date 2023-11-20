@@ -13,6 +13,7 @@ import AddItems from "../Pages/Dashboard/AddItems/AddItems";
 import AdminRoute from "./AdminRoute";
 import MangeItems from "../Pages/Dashboard/ManageItems/MangeItems";
 import UpdateItem from "../Pages/Dashboard/UpdateItem/UpdateItem";
+import Payment from "../Pages/Dashboard/Payment/Payment";
 
 const Routes = createBrowserRouter([
   {
@@ -52,6 +53,10 @@ const Routes = createBrowserRouter([
       {
         path: "cart",
         element: <Cart></Cart>,
+      },
+      {
+        path:'payment',
+        element:<Payment></Payment>
       },
       // admin lavel
       {
@@ -93,6 +98,7 @@ const Routes = createBrowserRouter([
           </AdminRoute>
         ),
       },
+     
     ],
   },
 ]);

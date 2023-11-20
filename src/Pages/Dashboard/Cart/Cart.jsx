@@ -2,6 +2,7 @@ import { FaTrash } from "react-icons/fa";
 import UseCart from "../../../Hooks/UseCart";
 import Swal from "sweetalert2";
 import UseAxios from "../../../Hooks/UseAxios";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
   const [cart, refetch] = UseCart();
@@ -18,10 +19,9 @@ const Cart = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        axiosSecure.delete(`/carts/${id}`)
-        .then((res) => {
+        axiosSecure.delete(`/carts/${id}`).then((res) => {
           if (res.data.deletedCount > 0) {
-            refetch()
+            refetch();
             Swal.fire({
               title: "Deleted!",
               text: "Your file has been deleted.",
@@ -37,7 +37,13 @@ const Cart = () => {
       <div className="flex justify-evenly mb-8">
         <h2 className="text-4xl">Items: {cart.length}</h2>
         <h2 className="text-4xl">Total Price: {totalPrice}</h2>
-        <button className="btn btn-secondary">Pay</button>
+        {cart.length ? (
+          <Link to="/dashboard/payment">
+            <button className="btn btn-secondary">Pay</button>
+          </Link>
+        ) : (
+          <button disabled className="btn btn-secondary">Pay</button>
+        )}
       </div>
       <div className="overflow-x-auto">
         <table className="table w-full">

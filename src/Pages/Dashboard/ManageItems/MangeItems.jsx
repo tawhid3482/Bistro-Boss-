@@ -6,8 +6,9 @@ import UseAxios from "../../../Hooks/UseAxios";
 import { Link } from "react-router-dom";
 
 const MangeItems = () => {
-  const [menu, refetch] = UseMenus();
+  const [menu, ,refetch] = UseMenus();
   const axiosSecure = UseAxios();
+
   const handleDeleteItem = (item) => {
     Swal.fire({
       title: "Are you sure?",
@@ -20,10 +21,9 @@ const MangeItems = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         const res = await axiosSecure.delete(`/menu/${item._id}`);
-        console.log(res.data);
+        // console.log(res.data.deletedCount);
         if (res.data.deletedCount > 0) {
           refetch();
-
           Swal.fire({
             position: "top-end",
             icon: "success",
@@ -75,7 +75,6 @@ const MangeItems = () => {
                   <td>{item.name}</td>
                   <td className=""> ${item.price}</td>
 
-                  
                   <td>
                     <Link to={`/dashboard/updateItem/${item._id}`}>
                       <button className="btn btn-ghost ">
@@ -83,7 +82,6 @@ const MangeItems = () => {
                       </button>
                     </Link>
                   </td>
-
 
                   <td>
                     <button

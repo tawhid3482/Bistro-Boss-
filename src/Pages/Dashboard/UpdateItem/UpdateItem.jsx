@@ -11,11 +11,10 @@ const image_hosting_api = `https://api.imgbb.com/1/upload?key=${imgae_hosting_ke
 const UpdateItem = () => {
     //   const item = useLoaderData();
     // console.log(item);
-
     const {name,category,price,recipe,_id}=useLoaderData()
-
-
-  const { register, handleSubmit, reset } = useForm();
+    //  console.log(name);
+    
+  const { register, handleSubmit,  } = useForm();
   const AxiosSecure = UseAxios();
   const axiosPublic = UserAxiosPublic()
   const onSubmit = async (data) => {
@@ -37,6 +36,7 @@ const UpdateItem = () => {
       };
       const menuRes = await AxiosSecure.patch(`/menu/${_id}`, menuItem);
       console.log(menuRes.data);
+      console.log(menuRes.data.modifiedCount);
       if (menuRes.data.modifiedCount > 0) {
         // reset();
         Swal.fire({
