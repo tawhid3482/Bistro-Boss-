@@ -12,9 +12,12 @@ import auth from "../Firebase/Firebase.config";
 import UserAxiosPublic from "../Hooks/UserAxiosPublic";
 
 export const AuthContext = createContext();
+
 const AuthProvider = ({ children }) => {
+
   const GoogleProvider = new GoogleAuthProvider();
   const axiosPublic = UserAxiosPublic();
+
   const [user, setUser] = useState(null);
 
   const [loading, setLoading] = useState(true);
@@ -23,14 +26,17 @@ const AuthProvider = ({ children }) => {
     setLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
   };
+
   const CreateUser = (email, password) => {
     setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
   };
+
   const loginbyGoogle = () => {
     setLoading(true);
     return signInWithPopup(auth, GoogleProvider);
   };
+  
   const updateProfileUser = (name, photo) => {
     return updateProfile(auth.currentUser, {
       displayName: name,
@@ -48,14 +54,17 @@ const AuthProvider = ({ children }) => {
         .then((res) => {
           if (res.data.token) {
             localStorage.setItem("access-token", res.data.token);
+            setLoading(false);
+
           }
         });
       }
        else{
         localStorage.removeItem("access-token")
+        setLoading(false);
+
       }
       
-      setLoading(false);
     });
     return () => {
       return observe();
